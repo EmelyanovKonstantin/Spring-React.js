@@ -24,7 +24,9 @@ class App extends React.Component {
         super(props);
         this.state = {employees: [], attributes: [], pageSize: 15, links: {}};
         this.onCreate = this.onCreate.bind(this);
-        this.onNavigate = this.onNavigate.bind(this)
+        this.onNavigate = this.onNavigate.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.updatePageSize = this.updatePageSize.bind(this);
     }
 
     loadFromServer(pageSize) {
@@ -78,6 +80,18 @@ class App extends React.Component {
                 links: employeeCollection.entity._links
             });
         });
+    }
+
+    onDelete(employee) {
+        client({method: 'DELETE', path: employee._links.self.href}).done(response => {
+            this.loadFromServer(this.state.pageSize);
+        });
+    }
+
+    onDelete(pageSize) {
+        if (pageSize !== this.state.pageSize) {
+            this.loadFromServer(pageSize);
+        }
     }
 
     componentDidMount() {
@@ -206,7 +220,7 @@ class EmployeeList extends React.Component{
 
     render() {
         const employees = this.props.employees.map(employee =>
-            <Employee key={employee._links.self.href} employee={employee}/>
+            <Employee key={employee._links.self.href} employee={employee} onDelete={this.props.onDelete}/>
         );
 
         const navLinks = [];
@@ -235,7 +249,7 @@ class EmployeeList extends React.Component{
                     {employees}
                     </tbody>
                 </table>
-                <div className="navLinks">
+                <div>
                     {navLinks}
                 </div>
             </div>
@@ -245,13 +259,26 @@ class EmployeeList extends React.Component{
 // end::employee-list[]
 
 // tag::employee[]
-class Employee extends React.Component{
+class Employee extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    handleDelete() {
+        this.props.onDelete(this.props.employee);
+    }
+
     render() {
         return (
             <tr>
                 <td>{this.props.employee.firstName}</td>
                 <td>{this.props.employee.lastName}</td>
                 <td>{this.props.employee.description}</td>
+                <td>
+                    <button onClick={this.handleDelete}>Delete</button>
+                </td>
             </tr>
         )
     }
