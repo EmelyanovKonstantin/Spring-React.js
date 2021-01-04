@@ -1,13 +1,21 @@
 'use strict';
 
+// tag::import
+import MaterialButton from '@material-ui/core/Button';
+import LastPageTwoToneIcon from '@material-ui/icons/LastPageTwoTone';
+import FirstPageTwoToneIcon from '@material-ui/icons/FirstPageTwoTone';
+import NavigateBeforeTwoToneIcon from '@material-ui/icons/NavigateBeforeTwoTone';
+import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
+// end::import
+
 // tag::vars[]
+const { makeStyles } = require('@material-ui/core/styles');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const client = require('./client');
 const follow = require(('./follow'))
+const  root = '/api'
 // end::vars[]
-
-var root = '/api';
 
 // tag::app[]
 class App extends React.Component {
@@ -203,16 +211,16 @@ class EmployeeList extends React.Component{
 
         const navLinks = [];
         if ("first" in this.props.links) {
-            navLinks.push(<button key="first" onClick={this.handleNavFirst}>&lt;&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="first" onClick={this.handleNavFirst}><FirstPageTwoToneIcon/></MaterialButton>);
         }
         if ("prev" in this.props.links) {
-            navLinks.push(<button key="prev" onClick={this.handleNavPrev}>&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="prev" onClick={this.handleNavPrev}><NavigateBeforeTwoToneIcon/></MaterialButton>);
         }
         if ("next" in this.props.links) {
-            navLinks.push(<button key="next" onClick={this.handleNavNext}>&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="next" onClick={this.handleNavNext}><NavigateNextTwoToneIcon/></MaterialButton>);
         }
         if ("last" in this.props.links) {
-            navLinks.push(<button key="last" onClick={this.handleNavLast}>&gt;&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="last" onClick={this.handleNavLast}><LastPageTwoToneIcon/></MaterialButton>);
         }
 
         return (
@@ -227,7 +235,7 @@ class EmployeeList extends React.Component{
                     {employees}
                     </tbody>
                 </table>
-                <div>
+                <div className="navLinks">
                     {navLinks}
                 </div>
             </div>

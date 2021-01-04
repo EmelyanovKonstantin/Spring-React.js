@@ -42,9 +42,9 @@ td, th {
     padding: 5px 20px 13px 20px;
     border-radius: 10px;
     background: #fff;
-    background: -moz-linear-gradient(#c52eff, #9e00f1);
-    background: -webkit-linear-gradient(#c52eff, #9e00f1);
-    background: -o-linear-gradient(#c52eff, #9e00f1);
+    background: -moz-linear-gradient(#4a63f0, #2f35ed);
+    background: -webkit-linear-gradient(#4a63f0, #2f35ed);
+    background: -o-linear-gradient(#4a63f0, #2f35ed);
 }
 
 .close {
@@ -67,3 +67,7 @@ td, th {
 }
 
 .close:hover { background: #00d9ff; }
+
+MuiButtonBase-root {
+    margin: 1px !important;
+}
