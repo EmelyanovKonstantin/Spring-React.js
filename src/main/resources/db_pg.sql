@@ -7,4 +7,4 @@ CREATE TABLE employee
     id         SERIAL PRIMARY KEY
 );
 
-ALTER TABLE employee ADD COLUMN version BIGINT
+ALTER TABLE employee ADD COLUMN version BIGINT NOT NULL DEFAULT 0
