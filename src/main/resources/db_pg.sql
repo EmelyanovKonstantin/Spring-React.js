@@ -6,3 +6,5 @@ CREATE TABLE employee
     description      TEXT,
     id         SERIAL PRIMARY KEY
 );
+
+ALTER TABLE employee ADD COLUMN version BIGINT

@@ -88,7 +88,7 @@ class App extends React.Component {
         });
     }
 
-    onDelete(pageSize) {
+    updatePageSize(pageSize) {
         if (pageSize !== this.state.pageSize) {
             this.loadFromServer(pageSize);
         }
