@@ -32,6 +32,7 @@ class App extends React.Component {
         this.onNavigate = this.onNavigate.bind(this);
         this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
         this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
+        this.refreshOnUpdateAction = this.refreshOnUpdateAction.bind(this);
     }
 
     loadFromServer(pageSize) {
@@ -148,6 +149,7 @@ class App extends React.Component {
     }
 
     refreshCurrentPage(message) {
+        console.log(message);
         follow(client, root, [{
             rel: 'employees',
             params: {
@@ -177,11 +179,51 @@ class App extends React.Component {
         });
     }
 
+    refreshOnUpdateAction(message) {
+        console.log(message.body.replace(/"/g));
+        follow(client, root, [{
+            rel: 'employees',
+            params: {
+                size: this.state.pageSize,
+                page: this.state.page.number
+            }
+        }]).then(employeeCollection => {
+            this.links = employeeCollection.entity._links;
+            this.page = employeeCollection.entity.page;
+
+
+            return employeeCollection.entity._embedded.employees.map(employee => {
+                if (employee._links.self.href === message.body.replace(/"/g)) {
+                    console.log("TRUE")
+                } else {
+                    console.log("FALSE");
+                    console.log(employee._links.self.href);
+                    console.log(message.body.replace(/"/g));
+                }
+                return client({
+                    method: 'GET',
+                    path: employee._links.self.href
+                })
+            });
+        }).then(employeePromises => {
+            return when.all(employeePromises);
+        }).then(employees => {
+            this.setState({
+                page: this.page,
+                employees: employees,
+                attributes: Object.keys(this.schema.properties),
+                pageSize: this.state.pageSize,
+                links: this.links
+            });
+        });
+    }
+
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
         stompClient.register([
             {route: '/topic/newEmployee', callback: this.refreshAndGoToLastPage},
             {route: '/topic/updateEmployee', callback: this.refreshCurrentPage},
+            {route: '/topic/updateAction', callback: this.refreshOnUpdateAction},
             {route: '/topic/deleteEmployee', callback: this.refreshCurrentPage}
         ]);
     }
@@ -261,6 +303,7 @@ class UpdateDialog extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.wsSend = this.wsSend.bind(this)
     }
 
     handleSubmit(e) {
@@ -271,6 +314,12 @@ class UpdateDialog extends React.Component {
         });
         this.props.onUpdate(this.props.employee, updatedEmployee);
         window.location = "#";
+    }
+
+    wsSend(e) {
+        console.log(this);
+        console.log("WSSEND");
+        stompClient.send(this.props.employee.entity._links.self.href);
     }
 
     render() {
@@ -286,7 +335,7 @@ class UpdateDialog extends React.Component {
 
         return (
             <div>
-                <a href={"#" + dialogId}>Update</a>
+                <a href={"#" + dialogId} onClick={this.wsSend}>Update</a>
 
                 <div id={dialogId} className="modalDialog">
                     <div>
