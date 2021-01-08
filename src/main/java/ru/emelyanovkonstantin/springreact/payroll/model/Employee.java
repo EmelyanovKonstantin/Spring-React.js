@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Employee
+ * Simple JavaBean object that represent role of {@link Employee}
+ *
+ * @version 1.0
  */
 @Entity
 public class Employee {
@@ -17,12 +19,17 @@ public class Employee {
     private String description;
     private @Version @JsonIgnore Long version;
 
+    @ManyToOne
+    @JoinColumn(name="manager_id", referencedColumnName="id")
+    private  Manager manager;
+
     private Employee() {}
 
-    public Employee(String firstName, String lastName, String description) {
+    public Employee(String firstName, String lastName, String description, Manager manager) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.description = description;
+        this.manager = manager;
     }
 
     @Override
@@ -34,13 +41,22 @@ public class Employee {
                 Objects.equals(firstName, employee.firstName) &&
                 Objects.equals(lastName, employee.lastName) &&
                 Objects.equals(description, employee.description) &&
-                Objects.equals(version, employee.version);
+                Objects.equals(version, employee.version)&&
+                Objects.equals(manager, employee.manager);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, firstName, lastName, description);
+        return Objects.hash(id, firstName, lastName, description, manager);
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 
     public Long getId() {
@@ -91,6 +107,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", description='" + description + '\'' +
                 ", version=" + version +
+                ", manager=" + manager +
                 '}';
     }
 }

@@ -12,6 +12,11 @@ import ru.emelyanovkonstantin.springreact.payroll.model.Employee;
 
 import static ru.emelyanovkonstantin.springreact.payroll.configuration.WebSocketConfiguration.MESSAGE_PREFIX;
 
+/**
+ * Controller for {@link Employee}
+ *
+ * @version 1.0
+ */
 @Component
 @RepositoryEventHandler(Employee.class)
 public class EventHandler {

@@ -24,7 +24,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {employees: [], attributes: [], page: 1, pageSize: 10, links: {}};
+        this.state = {employees: [], attributes: [], page: 1, pageSize: 10, links: {}, loggedInManager: this.props.loggedInManager};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -43,9 +43,25 @@ class App extends React.Component {
                 path: employeeCollection.entity._links.profile.href,
                 headers: {'Accept': 'application/schema+json'}
             }).then(schema => {
+                // tag::json-schema-filter[]
+                /**
+                 * Filter unneeded JSON Schema properties, like uri references and
+                 * subtypes ($ref).
+                 */
+                Object.keys(schema.entity.properties).forEach(function (property) {
+                    if (schema.entity.properties[property].hasOwnProperty('format') &&
+                        schema.entity.properties[property].format === 'uri') {
+                        delete schema.entity.properties[property];
+                    }
+                    else if (schema.entity.properties[property].hasOwnProperty('$ref')) {
+                        delete schema.entity.properties[property];
+                    }
+                });
+
                 this.schema = schema.entity;
                 this.links = employeeCollection.entity._links;
                 return employeeCollection;
+                // end::json-schema-filter[]
             });
         }).then(employeeCollection => {
             this.page = employeeCollection.entity.page;
@@ -107,25 +123,44 @@ class App extends React.Component {
     }
 
     onDelete(employee) {
-        client({method: 'DELETE', path: employee.entity._links.self.href});
+        client({method: 'DELETE', path: employee.entity._links.self.href}
+        ).done(response => {/* let the websocket handle updating the UI */},
+            response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to delete ' +
+                        employee.entity._links.self.href);
+                }
+            });
     }
 
     onUpdate(employee, updatedEmployee) {
-        client({
-            method: 'PUT',
-            path: employee.entity._links.self.href,
-            entity: updatedEmployee,
-            headers: {
-                'Content-Type': 'application/json',
-                'If-Match': employee.headers.Etag
-            }
-        }).done(response => {
-            /* Let the websocket handler update the state */
-        }, response => {
-            if (response.status.code === 412) {
-                alert('DENIED: Unable to update ' + employee.entity._links.self.href + '. Your copy is stale.');
-            }
-        });
+        console.log(employee.entity.manager.name);
+        console.log(this.state);
+        if(employee.entity.manager.name === this.state.loggedInManager) {
+            updatedEmployee["manager"] = employee.entity.manager;
+            client({
+                method: 'PUT',
+                path: employee.entity._links.self.href,
+                entity: updatedEmployee,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'If-Match': employee.headers.Etag
+                }
+            }).done(response => {
+                /* Let the websocket handler update the state */
+            }, response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to update' +
+                        employee.entity._links.self.href);
+                }
+                if (response.status.code === 412) {
+                    alert('DENIED: Unable to update ' + employee.entity._links.self.href +
+                        '. Your copy is stale.');
+                }
+            });
+        } else {
+            alert("You are not authorized to update");
+        }
     }
 
     updatePageSize(pageSize) {
@@ -199,7 +234,8 @@ class App extends React.Component {
                               onNavigate={this.onNavigate}
                               onUpdate={this.onUpdate}
                               onDelete={this.onDelete}
-                              updatePageSize={this.updatePageSize}/>
+                              updatePageSize={this.updatePageSize}
+                              loggedInManager={this.state.loggedInManager}/>
             </div>
         )
     }
@@ -384,6 +420,7 @@ class EmployeeList extends React.Component {
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Description</th>
+                        <th>Manager</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -417,10 +454,12 @@ class Employee extends React.Component {
                 <td>{this.props.employee.entity.firstName}</td>
                 <td>{this.props.employee.entity.lastName}</td>
                 <td>{this.props.employee.entity.description}</td>
+                <td>{this.props.employee.entity.manager.name}</td>
                 <td>
                     <UpdateDialog employee={this.props.employee}
                                   attributes={this.props.attributes}
-                                  onUpdate={this.props.onUpdate}/>
+                                  onUpdate={this.props.onUpdate}
+                                  loggedInManager={this.props.loggedInManager}/>
                 </td>
                 <td>
                     <button onClick={this.handleDelete}>Delete</button>
@@ -433,7 +472,7 @@ class Employee extends React.Component {
 
 // tag::render[]
 ReactDOM.render(
-    <App />,
+    <App loggedInManager={document.getElementById('managername').innerHTML } />,
     document.getElementById('react')
 )
 // end::render[]
