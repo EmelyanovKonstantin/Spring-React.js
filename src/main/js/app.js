@@ -411,16 +411,16 @@ class EmployeeList extends React.Component {
 
         const navLinks = [];
         if ("first" in this.props.links) {
-            navLinks.push(<button key="first" onClick={this.handleNavFirst}>&lt;&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="first" onClick={this.handleNavFirst}><FirstPageTwoToneIcon/></MaterialButton>);
         }
         if ("prev" in this.props.links) {
-            navLinks.push(<button key="prev" onClick={this.handleNavPrev}>&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="prev" onClick={this.handleNavPrev}><NavigateBeforeTwoToneIcon/></MaterialButton>);
         }
         if ("next" in this.props.links) {
-            navLinks.push(<button key="next" onClick={this.handleNavNext}>&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="next" onClick={this.handleNavNext}><NavigateNextTwoToneIcon/></MaterialButton>);
         }
         if ("last" in this.props.links) {
-            navLinks.push(<button key="last" onClick={this.handleNavLast}>&gt;&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="last" onClick={this.handleNavLast}><LastPageTwoToneIcon/></MaterialButton>);
         }
 
         return (
