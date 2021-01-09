@@ -1,7 +1,5 @@
 <!-- PROJECT LOGO -->
-<br />
 <h1 align="center">
-  <br>
   <img src="https://keyholesoftware.com/wp-content/uploads/Spring-Boot-React.png" height="200" alt="ArminC AutoExec"></a>
 </h1>
 <p align="center">
@@ -46,7 +44,6 @@
 * [Babel](https://babeljs.io) <img src="https://d33wubrfki0l68.cloudfront.net/7a197cfe44548cc1a3f581152af70a3051e11671/78df8/img/babel.svg" alt="Logo" width="" height="10">
 * [Webpack](https://webpack.js.org) <img src="https://webpack.js.org/site-logo.1fcab817090e78435061.svg" alt="Logo" width="" height="10">
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 * Spring and React.js boilerplate App.<br>
@@ -54,7 +51,7 @@
 * App features:<br>
   * Authorization and authentication<br>
   * Browse PostgesSQL database:<br>
-<img src="http://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/browse.png?raw=true" alt="Logo" width="" height="400"><br><br>
+<img src="https://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/browse.png?raw=true" alt="Logo" width="" height="400"><br><br>
   * Resize and explorers table:<br>
 <img src="https://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/resize.png?raw=true" alt="Logo" width="" height="400"><br><br>
   * Create, update and delete record in datebase:<br>
