@@ -1,9 +1,10 @@
 <!-- PROJECT LOGO -->
 <br />
+<h1 align="center">
+  <br>
+  <img src="https://keyholesoftware.com/wp-content/uploads/Spring-Boot-React.png" height="200" alt="ArminC AutoExec"></a>
+</h1>
 <p align="center">
-    <img src="https://keyholesoftware.com/wp-content/uploads/Spring-Boot-React.png" alt="Logo" width="" height="80">
-
-
   <h3 align="center">Spring-React.js</h3>
 
   <p align="center">
@@ -11,7 +12,7 @@
 </p>
 
 
-
+---
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
@@ -48,17 +49,17 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Spring and React.js boilerplate App.<br>
-Created for training purposes.<br>
-App features:<br>
-Authorization and authentication<br>
-Browse PostgesSQL database:<br>
-<img src="" alt="Logo" width="" height="80"><br>
-Resize and explorers table:<br>
-<img src="" alt="Logo" width="" height="80"><br>
-Create, update and delete record in datebase:<br>
-<img src="" alt="Logo" width="" height="80"><br>
-Receive information about events using websocket
+* Spring and React.js boilerplate App.<br>
+* Created for training purposes.<br>
+* App features:<br>
+  * Authorization and authentication<br>
+  * Browse PostgesSQL database:<br>
+<img src="http://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/browse.png?raw=true" alt="Logo" width="" height="400"><br><br>
+  * Resize and explorers table:<br>
+<img src="https://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/resize.png?raw=true" alt="Logo" width="" height="400"><br><br>
+  * Create, update and delete record in datebase:<br>
+<img src="https://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/create.png?raw=true" alt="Logo" width="" height="400"><br><br>
+  * Receive information about events using websocket
 <!-- GETTING STARTED -->
 ## Getting Started
 
