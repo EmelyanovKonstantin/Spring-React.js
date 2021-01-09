@@ -6,6 +6,7 @@ import LastPageTwoToneIcon from '@material-ui/icons/LastPageTwoTone';
 import FirstPageTwoToneIcon from '@material-ui/icons/FirstPageTwoTone';
 import NavigateBeforeTwoToneIcon from '@material-ui/icons/NavigateBeforeTwoTone';
 import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
+import TextField from '@material-ui/core/TextField';
 // end::import
 
 // tag::vars[]
@@ -24,7 +25,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {employees: [], attributes: [], page: 1, pageSize: 10, links: {}, loggedInManager: this.props.loggedInManager};
+        this.state = {employees: [], attributes: [], page: 1, pageSize: 5, links: {}, loggedInManager: this.props.loggedInManager};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -224,7 +225,7 @@ class App extends React.Component {
     render() {
         console.log(this)
         return (
-            <div>
+            <div >
                 <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
                 <EmployeeList page={this.state.page}
                               employees={this.state.employees}
@@ -271,7 +272,7 @@ class CreateDialog extends React.Component {
         );
         return (
             <div>
-                <a href="#createEmployee">Create</a>
+                <MaterialButton variant="contained"  href="#createEmployee">Create</MaterialButton>
 
                 <div id="createEmployee" className="modalDialog">
                     <div>
@@ -281,7 +282,7 @@ class CreateDialog extends React.Component {
 
                         <form>
                             {inputs}
-                            <button onClick={this.handleSubmit}>Create</button>
+                            <MaterialButton variant="contained" color="primary" onClick={this.handleSubmit}>Create</MaterialButton>
                         </form>
                     </div>
                 </div>
@@ -322,7 +323,7 @@ class UpdateDialog extends React.Component {
 
         return (
             <div>
-                <a href={"#" + dialogId}>Update</a>
+                <MaterialButton variant="outlined" color="primary" href={"#" + dialogId}>Update</MaterialButton>
 
                 <div id={dialogId} className="modalDialog">
                     <div>
@@ -332,7 +333,7 @@ class UpdateDialog extends React.Component {
 
                         <form>
                             {inputs}
-                            <button onClick={this.handleSubmit}>Update</button>
+                            <MaterialButton variant="contained" onClick={this.handleSubmit}>Update</MaterialButton>
                         </form>
                     </div>
                 </div>
@@ -398,22 +399,22 @@ class EmployeeList extends React.Component {
 
         const navLinks = [];
         if ("first" in this.props.links) {
-            navLinks.push(<button key="first" onClick={this.handleNavFirst}>&lt;&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="first" onClick={this.handleNavFirst}><FirstPageTwoToneIcon/></MaterialButton>);
         }
         if ("prev" in this.props.links) {
-            navLinks.push(<button key="prev" onClick={this.handleNavPrev}>&lt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="prev" onClick={this.handleNavPrev}><NavigateBeforeTwoToneIcon/></MaterialButton>);
         }
         if ("next" in this.props.links) {
-            navLinks.push(<button key="next" onClick={this.handleNavNext}>&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" color="primary" key="next" onClick={this.handleNavNext}><NavigateNextTwoToneIcon/></MaterialButton>);
         }
         if ("last" in this.props.links) {
-            navLinks.push(<button key="last" onClick={this.handleNavLast}>&gt;&gt;</button>);
+            navLinks.push(<MaterialButton variant="contained" key="last" onClick={this.handleNavLast}><LastPageTwoToneIcon/></MaterialButton>);
         }
 
         return (
             <div>
                 {pageInfo}
-                <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
+                <input class="pageSizeInput" ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
                 <table>
                     <tbody>
                     <tr>
@@ -421,13 +422,13 @@ class EmployeeList extends React.Component {
                         <th>Last Name</th>
                         <th>Description</th>
                         <th>Manager</th>
-                        <th></th>
-                        <th></th>
+                        <th>Update</th>
+                        <th>Delete</th>
                     </tr>
                     {employees}
                     </tbody>
                 </table>
-                <div>
+                <div class="navLinks">
                     {navLinks}
                 </div>
             </div>
@@ -462,7 +463,7 @@ class Employee extends React.Component {
                                   loggedInManager={this.props.loggedInManager}/>
                 </td>
                 <td>
-                    <button onClick={this.handleDelete}>Delete</button>
+                    <MaterialButton variant="outlined" onClick={this.handleDelete}>Delete</MaterialButton>
                 </td>
             </tr>
         )
