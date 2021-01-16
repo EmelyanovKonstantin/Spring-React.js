@@ -57,6 +57,7 @@
   * Create, update and delete record in datebase:<br>
 <img src="https://github.com/EmelyanovKonstantin/Spring-React.js/blob/master/images/create.png?raw=true" alt="Logo" width="" height="400"><br><br>
   * Receive information about events using websocket
+  
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -70,9 +71,9 @@
    ```sh
    npm install
    ```
+   
 <!-- USAGE EXAMPLES -->
 ### Usage
-
 1. Create Tables in your PostgreSQL DB
    ```sql
    CREATE TABLE employee
@@ -108,6 +109,7 @@
 5. Open browser on [http://localhost:8080/](http://localhost:8080/)
 6. Enter login(`Sergey`) and password(`jktyu*2`)
 
+<!-- DEVELOP -->
 ### Develop
 1. Run webpack-dev-server on the command line
    ```sh
