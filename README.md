@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
-<p align="center">
+<h1 align="center">
   <img src="images/img.jpeg" height="200" alt="ArminC AutoExec"></a>
-</p>
+</h1>
 <p align="center">
   <h3 align="center">Spring-React.js</h3>
 
